@@ -1,12 +1,55 @@
 # Андреев Николай Владимирович
 
-Тема проекта отсутствует (пока что)
+Тема проекта: Pokégochi
 
-Что нужно сделать:
+```mermaid
+ stateDiagram-v2
+    [*] --> /start
+    /start --> CreateCharacter
+    CreateCharacter --> GetStartPokemon
+    GetStartPokemon --> MainMenu
+    
+    MainMenu --> ManagePokemons
+    MainMenu --> Inventory
+    MainMenu --> Arena
+    MainMenu --> Shop
+    MainMenu --> ChangeCharacter
+    MainMenu --> Donate
+    
+    ManagePokemons --> SelectPokemon
+    SelectPokemon --> ChangeName
+    SelectPokemon --> ApplyInventory
+    SelectPokemon --> FreePokemon
+    SelectPokemon --> SendPokemon
+    ChangeName --> SelectPokemon
+    ApplyInventory --> ApplyInventory
+    ApplyInventory --> SelectPokemon
+    FreePokemon --> SelectPokemon
+    SendPokemon --> SelectReceiver
+    SelectReceiver --> Send
+    Send --> SelectPokemon
+```
 
-- [x] Выспаться
-- [x] Пойти на занятия по Python
-- [ ] Выжить
-- [ ] Погулять по набережной
-- [ ] Написать материалы по следующей теме
-- [ ] Пить меньше кофе
+Основная функциональность:
+
+- Кастомизация персонажа
+- Работа с покемонами:
+  - Рандомный стартовый покемон
+  - Покупка покемонов за внутриигровую валюту
+  - Система уровней и прокачка характеристик
+- Инвентарь:
+  - Лекарства
+  - Бусты
+  - Движения
+- Битвы покемонов:
+  - Выбор покемона для битвы
+  - Расчёт результата битвы
+  - Рейтинг
+- Достижения
+- Магазин
+- Донат (BTC, ETH, USDC, TON)
+
+ToDo:
+
+- Кланы
+- Боевой пропуск
