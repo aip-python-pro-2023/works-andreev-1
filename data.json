@@ -1,0 +1,6 @@
+{
+  "name": "Nikolay Andreev",
+  "age": 25,
+  "is_admin": true,
+  "marks": [5, 4, 5, "5A", "3E", 0.78]
+}
