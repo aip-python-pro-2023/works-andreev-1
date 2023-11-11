@@ -1,0 +1,12 @@
+beautifultable==1.1.0
+certifi==2023.7.22
+charset-normalizer==3.3.0
+filelock==3.13.1
+idna==3.4
+pysondb==1.6.7
+pyTelegramBotAPI==4.14.0
+python-dotenv==1.0.0
+requests==2.31.0
+tabulate==0.9.0
+urllib3==2.0.6
+wcwidth==0.2.9
