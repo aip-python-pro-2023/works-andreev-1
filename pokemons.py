@@ -3,4 +3,5 @@ from pysondb import getDb
 
 def get_pokemon(name):
     db = getDb('pokemons.json')
-    return db.getBy({'name': name})[0]
+    result = db.getBy({'name': name})
+    return result[0] if result else None

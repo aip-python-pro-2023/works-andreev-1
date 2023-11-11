@@ -18,10 +18,17 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['pokemon'])
 def get_pokemon(message):
+    if message.text == '/pokemon':
+        response = 'Вместе с командой нужно отправить название Покемона, например, `/pokemon pikachu`'
+        bot.send_message(message.chat.id, response, parse_mode='MarkdownV2')
+        return
+
     pokemon_name = message.text.split()[1]
     pokemon = pokemons.get_pokemon(pokemon_name)
 
-    response = f"""*Название*: {pokemon['name']}
+    response = 'Покемон с таким названием не найден'
+    if pokemon:
+        response = f"""*Название*: {pokemon['name']}
 *Рост*: {pokemon['height'] * 10} см
 *Вес*: {pokemon['weight'] * 100} г
 *Типы*: {', '.join([t['type']['name'].capitalize() for t in pokemon['types']])}"""
