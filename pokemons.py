@@ -1,7 +1,13 @@
-from pysondb import getDb
+import os
+
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.environ['POKEAPI_BASE_URL']
 
 
 def get_pokemon(name):
-    db = getDb('pokemons.json')
-    result = db.getBy({'name': name})
-    return result[0] if result else None
+    result = requests.get(BASE_URL + f'/pokemon/{name}')
+    return result.json() if result.ok else None
