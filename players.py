@@ -18,6 +18,27 @@ def register(player_id):
     return True
 
 
+def get_player(player_id):
+    db = getDb('players.json', '_id')
+    result = db.getByQuery({'player_id': player_id})
+    if not result:
+        return None
+
+    return result[0]
+
+
+def get_text_description(player_id):
+    player = get_player(player_id)
+    if player is None:
+        return None
+
+    return f"""
+*Очки опыта*: {player['experience']} XP
+*Деньги*: {player['money']} PC
+*Покемоны*: {', '.join(pokemon['name'].capitalize() for pokemon in player['pokemons'])}
+"""
+
+
 def add_pokemon(player_id, pokemon_name):
     pokemon = pokemons.get_pokemon(pokemon_name)
     if pokemon is None:
@@ -27,6 +48,7 @@ def add_pokemon(player_id, pokemon_name):
     player = db.getByQuery({'player_id': player_id})[0]
     player['pokemons'].append({
         'name': pokemon_name,
+        'experience': 0,
         'stats': {
             'hp': pokemon['stats'][0]['base_stat'],
             'attack': pokemon['stats'][1]['base_stat'],

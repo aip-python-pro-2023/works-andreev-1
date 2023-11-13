@@ -77,6 +77,16 @@ def get_pokemon(message):
     bot.send_message(message.chat.id, response, parse_mode='MarkdownV2')
 
 
+@bot.message_handler(commands=['stats'])
+def get_stats(message):
+    response = players.get_text_description(message.from_user.id)
+    if response is None:
+        bot.send_message(message.chat.id, 'Вы ещё не стали тренером... Но можете им стать, отправив /start', parse_mode='MarkdownV2')
+        return
+
+    bot.send_message(message.chat.id, response, parse_mode='MarkdownV2')
+
+
 @bot.message_handler(func=lambda m: True)
 def echo_all(message):
     bot.send_message(message.chat.id, 'Непонятное сообщение...')
