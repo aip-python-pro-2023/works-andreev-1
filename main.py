@@ -3,6 +3,7 @@ import os
 import telebot
 from dotenv import load_dotenv
 
+import players
 import pokemons
 
 load_dotenv()
@@ -11,9 +12,49 @@ TELEGRAM_TOKEN = os.environ['TELEGRAM_TOKEN']
 bot = telebot.TeleBot(TELEGRAM_TOKEN, parse_mode=None)
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['help'])
 def send_welcome(message):
     bot.reply_to(message, "Howdy, how are you doing?")
+
+
+@bot.message_handler(commands=['start'])
+def register_player(message: telebot.types.Message):
+    is_ok = players.register(message.from_user.id)
+    if not is_ok:
+        bot.send_message(message.chat.id, 'Вы уже зарегистрированы :\\)', parse_mode='MarkdownV2')
+        return
+
+    bot.send_message(message.chat.id, 'Поздравляем с регистрацией\\! 🎉', parse_mode='MarkdownV2')
+
+    markup = telebot.types.InlineKeyboardMarkup(row_width=3)
+    button_1 = telebot.types.InlineKeyboardButton('Grookey', callback_data='starter_grookey')
+    button_2 = telebot.types.InlineKeyboardButton('Scorbunny', callback_data='starter_scorbunny')
+    button_3 = telebot.types.InlineKeyboardButton('Sobble', callback_data='starter_sobble')
+    markup.add(button_1, button_2, button_3)
+
+    response = """*Выберите стартового покемона*
+
+Вы можете выбрать одного из трёх стартовых покемонов:
+
+🌿 *Grookey:* Покемон травяного типа
+🔥 *Scorbunny:* Покемон огненного типа
+🌊 *Sobble:* Покемон водяного типа
+"""
+
+    bot.send_message(message.chat.id, response, parse_mode='MarkdownV2', reply_markup=markup)
+
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith('starter_'))
+def handle_starter_selection(call: telebot.types.CallbackQuery):
+    selected = call.data.split('_')[1]
+    match selected:
+        case 'grookey' | 'scorbunny' | 'sobble' as name:
+            bot.answer_callback_query(call.id, f'Вы выбрали {name.capitalize()}!')
+            players.add_pokemon(call.from_user.id, name)
+            bot.edit_message_reply_markup(call.message.chat.id, call.message.id, reply_markup=None)
+            bot.send_message(call.message.chat.id, f'Вы выбрали {name.capitalize()}!')
+        case _:
+            bot.answer_callback_query(call.id, "Вы выбрали что\\-то не то :\\(")
 
 
 @bot.message_handler(commands=['pokemon'])
