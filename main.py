@@ -14,7 +14,14 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN, parse_mode=None)
 
 @bot.message_handler(commands=['help'])
 def send_welcome(message):
-    bot.reply_to(message, "Howdy, how are you doing?")
+    response = """Основные команды:
+
+/start - регистрация и получение стартового покемона (один раз)
+/pokemon <name> - получение базовой информации о покемоне
+/battle - битва с другим игроков
+/shop - магазин
+/stats - статистика игрока"""
+    bot.send_message(message.chat.id, response)
 
 
 @bot.message_handler(commands=['start'])
