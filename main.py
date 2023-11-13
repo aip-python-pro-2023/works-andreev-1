@@ -24,14 +24,7 @@ def get_pokemon(message):
         return
 
     pokemon_name = message.text.split()[1]
-    pokemon = pokemons.get_pokemon(pokemon_name)
-
-    response = 'Покемон с таким названием не найден'
-    if pokemon:
-        response = f"""*Название*: {pokemon['name']}
-*Рост*: {pokemon['height'] * 10} см
-*Вес*: {pokemon['weight'] * 100} г
-*Типы*: {', '.join([t['type']['name'].capitalize() for t in pokemon['types']])}"""
+    response = pokemons.get_text_description(pokemon_name)
 
     bot.send_message(message.chat.id, response, parse_mode='MarkdownV2')
 
