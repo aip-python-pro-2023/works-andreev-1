@@ -7,22 +7,50 @@ class Pokemon:
 
     # Конструктор
     def __init__(self, pokemon_type, species, name, health, attack, defense, speed, experience):
-        self.id = Pokemon.current_id
+        self.__id = Pokemon.current_id
         Pokemon.current_id += 1
-        self.type = pokemon_type
-        self.species = species
-        self.name = name
-        self.health = health
-        self.attack = attack
-        self.defense = defense
-        self.speed = speed
-        self.experience = experience
+        self.__type = pokemon_type
+        self.__species = species
+        self.__name = name
+        self.__health = health
+        self.__attack = attack
+        self.__defense = defense
+        self.__speed = speed
+        self.__experience = experience
+
+    # Геттер
+    def get_experience(self):
+        return self.__experience
+
+    # Сеттер
+    def set_experience(self, new_experience):
+        if 0 <= new_experience - self.__experience <= 1000:
+            self.__experience = new_experience
+
+    @property
+    def experience(self):
+        return self.__experience
+
+    @experience.setter
+    def experience(self, value):
+        if 0 <= value - self.__experience <= 1000:
+            self.__experience = value
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        bad_words = ['Дурак']
+        if value not in bad_words:
+            self.__name = value
 
     def __str__(self):
-        return f'Pokemon(id={self.id}, species={self.species}, type={self.type}, name={self.name})'
+        return f'Pokemon(id={self.__id}, species={self.__species}, type={self.__type}, name={self.__name}, experience={self.__experience})'
 
     def __eq__(self, other):
-        return isinstance(other, Pokemon) and self.id == other.id
+        return isinstance(other, Pokemon) and self.__id == other.__id
 
     def __contains__(self, item):
         for i in 1, 2, 3, 4, 5:
@@ -31,16 +59,16 @@ class Pokemon:
         return False
 
     def fight(self, other: 'Pokemon'):
-        if self.speed > other.speed:
+        if self.__speed > other.__speed:
             first, second = self, other
         else:
             first, second = other, self
-        while first.health > 0 and second.health > 0:
-            damage = max(first.attack - second.defense, 0)
-            second.health -= damage
+        while first.__health > 0 and second.__health > 0:
+            damage = max(first.__attack - second.__defense, 0)
+            second.__health -= damage
             first, second = second, first
 
-        return self.health > 0
+        return self.__health > 0
 
     @staticmethod
     def create_from_species(species, name):
@@ -59,13 +87,14 @@ class Pokemon:
 
 # Вызов конструктора класса Pokemon
 scorbunny = Pokemon('fire', 'scorbunny', 'Scorbunny', 100, 25, 15, 30, 0)
-scorbunny.health = 500
+# scorbunny.__health = 500
+# scorbunny.__experience = 100_000
 
 scorbunny_clone = Pokemon('fire', 'scorbunny', 'Scorbunny', 100, 25, 15, 30, 0)
 print(scorbunny == scorbunny_clone)
 
 grookey = Pokemon('grass', 'grookey', 'Grookey', 80, 20, 20, 25, 0)
-grookey.speed = 30
+# grookey.__speed = 30
 
 bulbasaur = Pokemon.create_from_species('bulbasaur', 'Bulbasaur')
 
@@ -82,4 +111,12 @@ print(bulbasaur)
 
 result = scorbunny.fight(grookey)
 print(result)
-print(scorbunny.health, grookey.health)
+# print(scorbunny.__health, grookey.__health)
+print(scorbunny.get_experience())
+
+# Используем геттер и сеттер
+scorbunny.set_experience(scorbunny.get_experience() + 100)
+# Используем свойство
+scorbunny.experience += 100
+
+scorbunny.name = 'Test'
