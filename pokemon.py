@@ -4,9 +4,26 @@ import pokemons
 class Pokemon:
     # Статическое поле класса Pokemon
     current_id = 1
+    __id: int
+    __type: str
+    __species: str
+    __name: str
+    __health: int
+    __attack: int
+    __defense: int
+    __speed: int
+    __experience: int
 
     # Конструктор
-    def __init__(self, pokemon_type, species, name, health, attack, defense, speed, experience):
+    def __init__(self,
+                 pokemon_type: str,
+                 species: str,
+                 name: str,
+                 health: int,
+                 attack: int,
+                 defense: int,
+                 speed: int,
+                 experience: int) -> None:
         self.__id = Pokemon.current_id
         Pokemon.current_id += 1
         self.__type = pokemon_type
@@ -23,7 +40,7 @@ class Pokemon:
         return self.__experience
 
     # Сеттер
-    def set_experience(self, new_experience):
+    def set_experience(self, new_experience: int) -> None:
         if 0 <= new_experience - self.__experience <= 1000:
             self.__experience = new_experience
 
